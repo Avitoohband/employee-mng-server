@@ -7,6 +7,9 @@ import employeeRoute from './router/Employee.router.js'
 
 // Configuration
 const app = express();
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
 app.use(bodyParser.json({extended: true }));
 app.use(bodyParser.urlencoded({extended: true }));
 dotenv.config();
@@ -18,10 +21,6 @@ const connectMongo = ()=>{
 mongoose.connect(process.env.MONGO_URI);
 console.log("Connected to Mongo!");
 }
-
-
-// use cors
-app.use(cors());
 
 app.use("/api/employee", employeeRoute);
 
