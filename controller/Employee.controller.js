@@ -41,11 +41,8 @@ export const createEmployee = async (req, res) => {
 
 export const updateEmployee = async (req, res) => {
   try {
-    const { username } = req.body;
-    console.log(username);
-
-    const emp = await Employee.findOne({ username: username });
-    console.log(emp);
+    const { username } = req.body;  
+    const emp = await Employee.findOne({ username: username });  
     if (emp === null) {
       res.status(204).send("Employee is not exists!");
       return;
