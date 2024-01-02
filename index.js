@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
 import employeeRoute from './router/Employee.router.js'
+import authRoute from './router/Auth.router.js'
 
 // Configuration
 const app = express();
@@ -23,6 +24,7 @@ console.log("Connected to Mongo!");
 }
 
 app.use("/api/employee", employeeRoute);
+app.use("/api/auth", authRoute);
 
 app.listen(port, () => {
   connectMongo();
