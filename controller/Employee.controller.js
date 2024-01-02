@@ -2,7 +2,7 @@ import Employee from "../model/Employee.model.js";
 
 export const getEmployee = async (req, res) => {
   try {
-    const { username } = req.params;
+    const username = capitaliseUserName(req.params.username);
     const emp = await Employee.findOne({ username: username });
     if (emp === null) {
       res.status(204);
@@ -30,7 +30,11 @@ export const getEmployees = async (req, res) => {
 
 export const createEmployee = async (req, res) => {
   try {
-    const emp = new Employee(req.body);
+    const emp = new Employee({
+      ...req.body,
+      username: capitaliseUserName(req.body.username),
+    });
+
     await emp.save();
 
     res.status(201).json(emp);
@@ -41,8 +45,8 @@ export const createEmployee = async (req, res) => {
 
 export const updateEmployee = async (req, res) => {
   try {
-    const { username } = req.body;  
-    const emp = await Employee.findOne({ username: username });  
+    const username = capitaliseUserName(req.body.username);
+    const emp = await Employee.findOne({ username: username });
     if (emp === null) {
       res.status(204).send("Employee is not exists!");
       return;
@@ -60,7 +64,7 @@ export const updateEmployee = async (req, res) => {
 
 export const deleteEmployee = async (req, res) => {
   try {
-    const { username } = req.params;
+    const username = capitaliseUserName(req.params.username);
 
     const emp = await Employee.findOneAndDelete({ username: username });
 
@@ -73,4 +77,8 @@ export const deleteEmployee = async (req, res) => {
   } catch (err) {
     res.status(409).json("Error has occured: " + err.message);
   }
+};
+
+const capitaliseUserName = (username) => {
+  return username.charAt(0).toUpperCase() + username.slice(1);
 };
